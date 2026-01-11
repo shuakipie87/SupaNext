@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - NODE_ENV=production
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  db:
+    restart: always
+    # In production, you might use a managed database (Supabase/RDS)
+    # If using this container, ensure volumes are backed up
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PROD}
+
+  redis:
+    restart: always
+    command: redis-server --save 60 1 --loglevel warning
